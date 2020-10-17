@@ -15,7 +15,12 @@ def oneTCPScan(host,port):
     if(not SYN):
         return False
     else:
-        return True
+        #If the machine sends a SYN/ACK packet, that means the port is open
+        if(SYN[TCP].flags == 'SA'):
+            RST=ip/TCP(dport=port,flags="RA")
+            send(RST,verbose=0)
+            return True
+    return False
 
 def printResult(resultPorts):
     print ('========Scan Results========\n')
@@ -94,7 +99,7 @@ else:
         exit()
     #Split port list into each individual port
     port_array = args.ports.split(",")
-    print('Scanning...')
+    print('Scanning...\n')
     for port in port_array:
         if (port == ''):
             continue
