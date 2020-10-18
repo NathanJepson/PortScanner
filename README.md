@@ -1,5 +1,7 @@
 # PortScannerITC567
+
 Port Scanner for IT&C 567
+Script name: PortScan.py
 
 usage: PortScan.py [-h] [--ports PORTS] [--protocol PROTOCOL] [--UT] [--max] [--timeout TIMEOUT] [--file] host
 
@@ -21,7 +23,7 @@ python3 PortScan.py [options] --file [filename]
 
 
 
-USAGE EXAMPLES BELOW
+Usage Examples Below
 =========================================================
 
 Scanning a Single port:
