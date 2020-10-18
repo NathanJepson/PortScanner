@@ -13,7 +13,7 @@ Installation
 ====================
 git clone https://github.com/TheSuddenFlame/PortScannerITC567
 
-Running the Program (example)
+Running the Program (Usages)
 ====================
 python3 PortScan.py [options] [host, i.e. 192.168.207.42]
 
@@ -21,7 +21,7 @@ python3 PortScan.py [options] --file [filename]
 
 
 
-MORE USAGE EXAMPLES BELOW
+USAGE EXAMPLES BELOW
 =========================================================
 
 Scanning a Single port:
