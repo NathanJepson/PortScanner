@@ -73,7 +73,9 @@ Grabbing the hosts to scan from a text file with an IP address on each line:
 Examples with Output
 =========================================================
  
-Command: sudo python3 PortScan.py --ports 7,8,9,123,135,137 --UT --file hosts.txt
+Command: 
+  
+    sudo python3 PortScan.py --ports 7,8,9,123,135,137 --UT --file hosts.txt
 
 Output:
 
@@ -109,7 +111,9 @@ Output:
              =============================
  
  ___________________________________________________________________________________________________________________
- Command: sudo python3 PortScan.py --timeout 3 --ports 1-20 --protocol UDP 192.168.207.42
+ Command: 
+     
+     sudo python3 PortScan.py --timeout 3 --ports 1-20 --protocol UDP 192.168.207.42
  
  Output: 
  
@@ -133,7 +137,9 @@ Output:
              =============================
 
 ___________________________________________________________________________________________________________________
-Command: sudo python3 PortScan.py --protocol ICMP 192.168.207.42
+Command: 
+
+    sudo python3 PortScan.py --protocol ICMP 192.168.207.42
 
 Output:
 
