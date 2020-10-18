@@ -3,6 +3,7 @@
 import argparse
 import re
 from scapy.all import *
+import time #Used for ICMP scanner
 
 print('\n================================================================')
 print('========Starting JEPSON\'S Remarkable PORT SCANNER (2020)========')
@@ -12,25 +13,30 @@ print('================================================================\n')
 def oneTCPScan(host,port,givenTimeout):
     ip=(IP(dst=host))
     port = int(port)
+    #This line below will craft the SYN packet
     SYN=sr1(ip/TCP(dport=port,flags="S")/"JUNK_INPUT_MY_DUDES",timeout=givenTimeout,verbose=0)
     if(not SYN):
         return False
     else:
         #If the machine sends a SYN/ACK packet, that means the port is open
         if(SYN[TCP].flags == 'SA'):
+            #A RST packet is sent just in case. This is so we don't establish a connection with the destination port
             RST=ip/TCP(dport=port,flags="RA")
             send(RST,verbose=0)
             return True
     return False
 
 #This fucntion will scan just one UDP port of a given machine
+#NOTE: The UDP scanner is not application specific, and if the host blocks various ports, then it could return many false-positives
 def oneUDPScan(host,port,givenTimeout):
     ip=(IP(dst=host))
     port = int(port)
+    #UDP packet is crafted below, with the source port being the default of 53 (the DNS port)
     UDP_PCKT=sr1(ip/UDP(sport=53, dport=port),timeout=givenTimeout,verbose=0)
     if (UDP_PCKT == None):
         return True
     else:
+        #If the port sends back an ICMP message, that means the port is closed
         if(UDP_PCKT[ICMP]):
             return False
         elif(UDP_PCKT[UDP]):
@@ -38,6 +44,18 @@ def oneUDPScan(host,port,givenTimeout):
         else:
             return False
     return False
+
+#This function will scan one host using the ICMP protocol, and will return any relevant ICMP message
+#This function will give us the reponse type of the ICMP response packet, and the time that it took to receive the message
+def oneICMPScan(host,givenTimeout):
+    ICMP_PCKT = sr1(IP(dst=host)/ICMP(),timeout=givenTimeout,verbose=0)
+    start_time = time.time()
+    if (ICMP_PCKT):
+        string_temp = ("ICMP:  Response type is " + str(ICMP_PCKT.getlayer(ICMP).type))
+        elapsed_time = time.time() - start_time
+        return (string_temp + ' ...and elapsed time is ' + str(elapsed_time*1000) + ' ms')
+    else:
+        return ("No packets returned (0 bytes received).")
 
 #Once all the scanning has completed, this function will print out the results
 def printResult(resultArray):
@@ -48,6 +66,11 @@ def printResult(resultArray):
 
 #This function will scan all ports of a given range (from lower to upper bounds), based on the protocols designated by the user
 def scanPortRange(lowerBound,upperBound,tcpudp,prot,host,result,timeout):
+    #If the protocol is ICMP, then we don't need to go through any port at all. Hence the reason for this if statement below
+    if (prot == 'ICMP'):
+        ICMP_Result = oneICMPScan(host,timeout)
+        result.append(ICMP_Result)
+        return result
     for port in range(lowerBound,upperBound+1):
         if (tcpudp):
             if (oneTCPScan(host,port,timeout) == True):
@@ -63,6 +86,7 @@ def scanPortRange(lowerBound,upperBound,tcpudp,prot,host,result,timeout):
     return result
 
 #This functions will scan all of the ports in a user's comma-separated-list, based on protocols designated by the user
+#NOTICE that the ICMP protocol is not handled in this function. Due to input validation in the script, ICMP is only handled in the 'scanPortRange' function
 def scanPortArray(portArray,tcpudp,prot,host,result,timeout):
     for port in port_array:
         #This line below handles an edge case where the first and last elements of an array could contain an empty string
@@ -157,6 +181,12 @@ if args.file:
 else:
     hosts.append(host)
 
+#These if statements handle the case when ICMP is the designated protocol, but ports are provided by the user
+if (protocol == 'ICMP'):
+    if args.ports:
+        print('You don\'t need to provide any ports when ICMP is the designated protocol. Run again without ports designated.')
+        exit()
+
 ###Change line below to set default timeout value
 timeout = 1 #####DEFAULT
 if args.timeout:
@@ -171,13 +201,19 @@ if (not ports_given):
     upperBound = 1024 ##DEFAULT
     if args.max:
         upperBound = 65535
-        print('No ports given, ports 1-65535 will be probed.')
+        if (protocol != 'ICMP'):
+            print('No ports given, ports 1-65535 will be probed.')
     else:
-        print('No ports given, ports 1-1024 will be probed.')
+        if (protocol != 'ICMP'):
+            print('No ports given, ports 1-1024 will be probed.')
     print('Scanning...')
     #For every host designated by the user, scan every port on them from the lower bound to the upper bound
     for host in hosts:
-        scan_result.append("Open ports on " + str(host) + ":")
+        #ICMP uses no ports, so we will catch this exception below
+        if (protocol == 'ICMP'):
+            scan_result.append("Results for " + str(host) + ":")
+        else:
+            scan_result.append("Open ports on " + str(host) + ":")
         scan_result = scanPortRange(1,upperBound,both_tcp_udp,protocol,host,scan_result,timeout)
         scan_result.append('\n')
     printResult(scan_result)
