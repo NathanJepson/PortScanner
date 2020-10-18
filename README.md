@@ -7,8 +7,7 @@ usage: PortScan.py [-h] [--ports PORTS] [--protocol PROTOCOL] [--UT] [--max] [--
 
 Requirements
 ====================
-python3
-Scapy
+python3, Scapy
 
 Installation
 ====================
@@ -20,8 +19,8 @@ python3 PortScan.py [options] [host, i.e. 192.168.207.42]
 python3 PortScan.py [options] --file [filename]
 
 
-=========================================================
-=============MORE USAGE EXAMPLES BELOW===================
+
+MORE USAGE EXAMPLES BELOW
 =========================================================
 
 Scanning a Single port:
@@ -55,8 +54,8 @@ Grabbing the hosts to scan from a text file with an IP address on each line:
     python3 PortScan.py --ports 1,80,443,500 --file myFile.txt
     
     
-=========================================================
-=============Examples with Output =======================
+
+Examples with Output
 =========================================================
  
 Command: sudo python3 PortScan.py --ports 7,8,9,123,135,137 --UT --file hosts.txt
