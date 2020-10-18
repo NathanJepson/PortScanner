@@ -22,10 +22,12 @@ python3 PortScan.py [options] [host, i.e. 192.168.207.42]
 python3 PortScan.py [options] --file [filename]
 
 
+
 Notice on UDP Scanning
 ========================
-The UDP scanner in the script is not application specific. In the case that UDP ports are blocked by firewalls, many false positives
+The UDP scanner in this script is not application specific. In the case that UDP ports are blocked by firewalls, many false positives
 could be returned. (UDP ports might be shown to be open that aren't actually open, in other words).
+
 
 
 Usage Examples Below
