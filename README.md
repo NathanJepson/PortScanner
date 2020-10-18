@@ -16,6 +16,7 @@ git clone https://github.com/TheSuddenFlame/PortScannerITC567
 Running the Program (example)
 ====================
 python3 PortScan.py [options] [host, i.e. 192.168.207.42]
+
 python3 PortScan.py [options] --file [filename]
 
 
@@ -24,33 +25,45 @@ MORE USAGE EXAMPLES BELOW
 =========================================================
 
 Scanning a Single port:
+
     python 3 PortScan.py --ports 80 192.168.207.42
 
 Scanning Multiple ports (range):
+
     python3 PortScan.py --ports 1-124 192.168.207.42
     
 Scanning Multiple ports (comma-separated list):
+
     python3 PortScan.py --ports 1,80,443,500 192.168.207.42
     
 Choosing a protocol (UDP, TCP, or ICMP):
+
     python3 PortScan.py --ports 80 --protocol UDP 192.168.207.42
+    
     python3 PortScan.py --protocol icmp
     
 Scanning for both TCP and UDP
+
     python3 PortScan.py --UT 192.168.207.42
+    
     python3 PortScan.py --ports 1,80,443,500 --UT 192.168.207.42
 
 Scanning all ports from 1-1024:
+
     python3 PortScan.py 192.168.207.42
 
 Scanning all ports from 1-65535:
+
     python3 PortScan.py --max 192.168.207.42
+    
     python3 PortScan.py --max --file myFile.txt
     
 Setting the timeout to 2 seconds (default is 1 second)--you can set it to any integer above 1:
+
     python3 PortScan.py --ports 1,80,443,500 --timeout 2 192.168.207.42 
     
 Grabbing the hosts to scan from a text file with an IP address on each line:
+
     python3 PortScan.py --ports 1,80,443,500 --file myFile.txt
     
     
