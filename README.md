@@ -35,7 +35,7 @@ Usage Examples Below
 
 Scanning a Single port:
 
-    python 3 PortScan.py --ports 80 192.168.207.42
+    python3 PortScan.py --ports 80 192.168.207.42
 
 Scanning Multiple ports (range):
 
