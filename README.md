@@ -1,6 +1,6 @@
-# PortScannerITC567
+# PortScanner
 
-Port Scanner for IT&C 567
+
 Script name: PortScan.py
 
 usage: PortScan.py [-h] [--ports PORTS] [--protocol PROTOCOL] [--UT] [--max] [--timeout TIMEOUT] [--file] host
