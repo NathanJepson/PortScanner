@@ -11,16 +11,11 @@ Requirements
 ====================
 python3, Scapy
 
-Installation
-====================
-git clone https://github.com/TheSuddenFlame/PortScannerITC567
-
 Running the Program (Usages)
 ====================
 python3 PortScan.py [options] [host, i.e. 192.168.207.42]
 
 python3 PortScan.py [options] --file [filename]
-
 
 
 Notice on UDP Scanning
